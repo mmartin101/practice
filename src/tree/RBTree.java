@@ -70,15 +70,44 @@ public class RBTree
                     z.getParent().getParent().setBlack(false);
                     z = z.getParent().getParent();
                 }
-                else if (z == z.getParent().getRight())
+                else
                 {
-                    z = z.getParent();
-                    rotateLeft(z);
-
-
+                    if (z == z.getParent().getRight())
+                    {
+                        z = z.getParent();
+                        rotateLeft(z);
+                    }
+                    z.getParent().setBlack(true);
+                    z.getParent().getParent().setBlack(false);
+                    rotateRight(z.getParent().getParent());
+                }
+            }
+            else
+            {
+                //z's uncle
+                TreeNode y = z.getParent().getParent().getLeft();
+                if (!y.isBlack())
+                {
+                    z.getParent().setBlack(true);
+                    y.setBlack(true);
+                    z.getParent().getParent().setBlack(false);
+                    z = z.getParent().getParent();
+                }
+                else
+                {
+                    if (z == z.getParent().getLeft())
+                    {
+                        z = z.getParent();
+                        rotateRight(z);
+                    }
+                    z.getParent().setBlack(true);
+                    z.getParent().getParent().setBlack(false);
+                    rotateLeft(z.getParent().getParent());
                 }
             }
         }
+
+        root.setBlack(true);
     }
 
     private void rotateLeft(TreeNode x)
